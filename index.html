@@ -1,19 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Hello World!</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-
+    We are using Node.js <script>
+    document.write(process.versions.node)
+    </script>,
+    Chromium <script>
+    document.write(process.versions.chrome)
+    </script>,
+    and Electron <script>
+    document.write(process.versions.electron)
+    </script>.
     <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
+    // You can also require other files to run in this process
+    require('./renderer.js');
+    window.$ = window.jQuery = require('./jquery.js');
+
+    $(function() {
+      const ipc = require('electron').ipcRenderer;
+      const asyncMsgBtn = $('#async-msg');
+      asyncMsgBtn.click(function() {
+        ipc.send('asynchronous-message', 'ping')
+      });
+      ipc.on('asynchronous-reply', function(event, arg) {
+          const message = `异步消息回复: ${arg}`;
+          $('#async-msg').text(message);
+      })
+
+
+
+
+
+    
+        $('.link').click(function() {
+            if (win == false) {
+                var url = $(this).attr('data-url');
+                const { BrowserWindow } = require('electron').remote;
+                let win = new BrowserWindow({ width: 800, height: 600 })
+                win.loadURL(url);
+            } else {
+                win.loadURL(url);
+            }
+
+        });
+    })
     </script>
-  </body>
+    <br>
+    <a href="javascript:;" target="_blank" data-url="https://huke88.com/" class="link">huke</a>
+    <br>
+    <a href="javascript:;" target="_blank" data-url="https://baidu.com/" class="link">baidu</a>
+    <div id="async-msg">45</div>
+</body>
+
 </html>
