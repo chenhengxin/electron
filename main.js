@@ -50,5 +50,12 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 const ipc = require('electron').ipcMain;
 ipc.on('asynchronous-message', function (event, arg) {
-  event.sender.send('asynchronous-reply', 'pong')
+  if (arg == '') {
+    event.sender.send('asynchronous-reply', 'one')
+  }else{
+    event.sender.send('asynchronous-reply', 'two');
+    const arg = 'have';
+    return arg;
+  }
+  
 })

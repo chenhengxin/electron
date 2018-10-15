@@ -24,31 +24,22 @@
     window.$ = window.jQuery = require('./jquery.js');
 
     $(function() {
-      const ipc = require('electron').ipcRenderer;
-      const asyncMsgBtn = $('#async-msg');
-      asyncMsgBtn.click(function() {
-        ipc.send('asynchronous-message', 'ping')
-      });
-      ipc.on('asynchronous-reply', function(event, arg) {
-          const message = `异步消息回复: ${arg}`;
-          $('#async-msg').text(message);
-      })
-
-
-
       
 
 
     
         $('.link').click(function() {
-            if (win == false) {
-                var url = $(this).attr('data-url');
+            const ipc = require('electron').ipcRenderer;
+            const url = $(this).attr('data-url');
+            ipc.send('asynchronous-message', 'one')
+            ipc.on('asynchronous-reply', function(event, arg) {
                 const { BrowserWindow } = require('electron').remote;
-                let win = new BrowserWindow({ width: 800, height: 600 })
-                win.loadURL(url);
-            } else {
-                win.loadURL(url);
-            }
+                 let top = new BrowserWindow()
+  let child = new BrowserWindow({parent: top})
+  child.show()
+  top.show()
+            })
+          
 
         });
     })
