@@ -24,24 +24,38 @@
     window.$ = window.jQuery = require('./jquery.js');
 
     $(function() {
-      
+
+        const { ipcRenderer } = require('electron')
+
+        ipcRenderer.on('asynchronous-reply', (event, arg) => {
+            $('.link').click(function() {
+                arg.close();
+            });
+
+        })
 
 
-    
-        $('.link').click(function() {
-            const ipc = require('electron').ipcRenderer;
-            const url = $(this).attr('data-url');
-            ipc.send('asynchronous-message', 'one')
-            ipc.on('asynchronous-reply', function(event, arg) {
-                const { BrowserWindow } = require('electron').remote;
-                 let top = new BrowserWindow()
-  let child = new BrowserWindow({parent: top})
-  child.show()
-  top.show()
-            })
-          
-
+        // 关闭
+        $('.close').click(function() {
+            ipcRenderer.send('asynchronous-message', 'close')
         });
+        // 全屏
+        $('.big').click(function() {
+            ipcRenderer.send('asynchronous-message', 'big');
+            $(this).hide();
+            $('.nobig').show();
+        });
+        $('.nobig').click(function() {
+            ipcRenderer.send('asynchronous-message', 'nobig')
+            $(this).hide();
+            $('.big').show();
+        });
+        // 最小化
+        $('.small').click(function() {
+            ipcRenderer.send('asynchronous-message', 'small')
+        });
+
+
     })
     </script>
     <br>
@@ -49,6 +63,7 @@
     <br>
     <a href="javascript:;" target="_blank" data-url="https://baidu.com/" class="link">baidu</a>
     <div id="async-msg">45</div>
+    <span class="close">关闭</span> <span class="big">全屏</span><span class="nobig" style="display: none;">窗口化</span> <span class="small">最小化</span>
 </body>
 
 </html>
