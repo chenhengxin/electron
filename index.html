@@ -25,15 +25,7 @@
 
     $(function() {
 
-        const { ipcRenderer } = require('electron')
-
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            $('.link').click(function() {
-                arg.close();
-            });
-
-        })
-
+        const { ipcRenderer } = require('electron');
 
         // 关闭
         $('.close').click(function() {
@@ -51,19 +43,26 @@
             $('.big').show();
         });
         // 最小化
-        $('.small').click(function() {
+        $('.aa').click(function() {
             ipcRenderer.send('asynchronous-message', 'small')
+        });
+
+
+        $('.link').click(function() {
+            let url = $(this).attr('data-url')
+            ipcRenderer.send('blank', url)
         });
 
 
     })
     </script>
     <br>
-    <a href="javascript:;" target="_blank" data-url="https://huke88.com/" class="link">huke</a>
+    <a href="javascript:;"  data-url="https://huke88.com/" class="link">huke</a>
     <br>
-    <a href="javascript:;" target="_blank" data-url="https://baidu.com/" class="link">baidu</a>
+    <a href="javascript:;"  data-url="https://baidu.com/" class="link">baidu</a>
+
     <div id="async-msg">45</div>
-    <span class="close">关闭</span> <span class="big">全屏</span><span class="nobig" style="display: none;">窗口化</span> <span class="small">最小化</span>
+    <span class="close">关闭</span> <span class="big">全屏</span><span class="nobig" style="display: none;">窗口化</span> <span class="aa">最小化</span>
 </body>
 
 </html>

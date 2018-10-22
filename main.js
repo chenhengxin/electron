@@ -68,3 +68,24 @@ ipc.on('asynchronous-message', function(event, arg) {
     }
 
 })
+let newWin
+let b = 1;
+ipc.on('blank', function (event, arg) {
+  if (b === 1) {
+    newWin = new BrowserWindow({
+      height: 563,
+      width: 1000,
+    })
+
+    newWin.loadURL(arg)
+    // mainWindow.id(id)
+    newWin.on('closed', () => {
+      newWin = null
+    })
+    b++;
+  }
+  else{
+    newWin.loadURL(arg)
+    newWin.show();
+  }
+})
